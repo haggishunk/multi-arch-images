@@ -13,10 +13,7 @@ RUN export GOOS=$(echo ${TARGETPLATFORM} | cut -d / -f1) && \
   # go mod vendor && \
   go build
 
-FROM alpine:3.17
-
-RUN apk add --update --no-cache ca-certificates && \
-  update-ca-certificates
+FROM gcr.io/distroless/static
 
 COPY --from=builder \
     /external-secrets/external-secrets/build/external-secrets \
