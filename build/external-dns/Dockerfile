@@ -1,4 +1,4 @@
-FROM golang:1.14 as builder
+FROM golang:1.19 as builder
 
 ARG TARGETPLATFORM
 ARG VERSION=v0.7.2
@@ -9,10 +9,10 @@ RUN export GOOS=$(echo ${TARGETPLATFORM} | cut -d / -f1) && \
   export GOARCH=$(echo ${TARGETPLATFORM} | cut -d / -f2) && \
   GOARM=$(echo ${TARGETPLATFORM} | cut -d / -f3 | cut -c2-) && \
   git clone --depth 1 -b ${VERSION} https://github.com/kubernetes-sigs/external-dns.git . && \
-  go mod vendor && \
+  # go mod vendor && \
   make build
 
-FROM alpine:3.12
+FROM alpine:3.17
 
 RUN apk add --update --no-cache ca-certificates && \
   update-ca-certificates
